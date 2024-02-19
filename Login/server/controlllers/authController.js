@@ -1,6 +1,8 @@
 import {User} from "../models/User.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { exec } from "child_process";
+import  fs from "fs";
 
 export const register = async (req, res) => {
     const {username, email, first_name, last_name, password, password_confirm} = req.body
@@ -140,3 +142,46 @@ export const profile = async (req, res) => {
 
     return res.status(200).json(user);
 };
+
+export const analyzeCode = async (req, res) => {
+    // Obtener el código del cuerpo de la solicitud
+    let codigo = req.body.codigo;
+    
+    // Verificar si el código es un objeto y convertirlo a cadena de texto si es necesario
+    if (typeof codigo !== 'string') {
+        codigo = JSON.stringify(codigo);
+    }
+
+    console.log("Código recibido:", codigo);
+
+    // Guardar el código en un archivo temporal
+    fs.writeFile('codigo.c', codigo, (err) => {
+        if (err) {
+            console.error('Error al escribir el archivo:', err);
+            return res.status(500).send('Error al escribir el archivo');
+        }
+
+        // Ejecutar GCC para compilar el archivo C
+        exec('gcc -Wall -o output codigo.c', (error, stdout, stderr) => {
+            // Eliminar el archivo temporal después de compilar
+            fs.unlink('codigo.c', (err) => {
+                if (err) {
+                    console.error('Error al eliminar el archivo temporal:', err);
+                }
+            });
+
+            if (error) {
+                console.error(`Error al compilar el código: ${error.message}`);
+                return res.status(500).json({ error: error.message });
+            }
+            if (stderr) {
+                console.error(`GCC reportó un error: ${stderr}`);
+                return res.status(400).json({ error: stderr });
+            }
+            
+            // Enviar la salida de GCC al cliente
+            res.send(stdout);
+        });
+    });
+};
+

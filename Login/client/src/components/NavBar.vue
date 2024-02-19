@@ -11,7 +11,7 @@
             <router-link :to="{name: 'home'}" class="nav-link-active" aria-current="page">Home</router-link>
         </li>
         <li v-if="isAuthenticated" class="nav-item" style="margin-left: 20px;">
-            <router-link :to="{name: 'user'}" class="nav-link-active" aria-current="page">Progrmación C</router-link>
+            <router-link :to="{name: 'user'}" class="nav-link-active" aria-current="page">Programación C</router-link>
         </li>
       </ul>
       <ul class="navbar-nav mx-2 mb-2 mb-lg-0 ml-auto">

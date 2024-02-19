@@ -11,6 +11,7 @@ import "./config/database.js";
 import {credentials} from "./middlewares/credentials.js";
 import {errorHandler} from "./middlewares/error_handler.js";
 import authRouter from "./routes/api/auth.js";
+import bodyParser from "body-parser";
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -26,6 +27,9 @@ app.use(express.static("public"));
 app.use("/static", express.static(path.join(__dirname, "public")));
 
 app.use("/api/auth", authRouter);
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.all("*", (req, res) => {
     res.status(404);
