@@ -38,7 +38,32 @@ const router = createRouter({
       name: 'profile',
       component: () => import('../views/auth/ProfileView.vue'),
       //meta: {requiresAuth: true}
-    }
+    },
+    {
+      path: '/descomposicion',
+      name: 'descomposicion',
+      component: () => import("../views/auth/Descomposition.vue"),
+    },
+    {
+      path: '/abstraccion',
+      name: 'abstraccion',
+      component: () => import("../views/auth/Abstraction.vue"),
+    },
+    {
+      path: '/algoritmo',
+      name: 'algoritmo',
+      component: () => import("../views/auth/Algorithm.vue"),
+    },
+    {
+      path: '/generalizacion',
+      name: 'generalizacion',
+      component: () => import("../views/auth/Generalization.vue"),
+    },
+    {
+      path: '/descomposicionEj',
+      name: 'descomposicionEj',
+      component: () => import("../views/auth/DescompositionEj.vue"),
+    },
   ]
 })
 
@@ -50,7 +75,7 @@ router.beforeResolve(async (to, from, next)=>{
   }else if(to.meta.requiresGuest && authStore.isAuthenticated){
     return next({name: 'home'})
   }else{
-    return next()
+    return next();
   }
 }) 
 
