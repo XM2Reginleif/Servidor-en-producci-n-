@@ -1145,7 +1145,10 @@ export default {
                         ],
                     },
                ]
-            }
+            },{
+               label: "Encuesta" ,
+               href: "/EncuestaTAM"
+            },
     
     ]
     
